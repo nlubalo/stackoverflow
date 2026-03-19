@@ -6,7 +6,12 @@ from dotenv import load_dotenv
 import config
 from ingestion.client import StackExchangeClient
 from repositories.repository import Repository
-from transforms.questions import transform_questions, transform_answers, transform_users
+from transforms.questions import (
+    transform_questions,
+    transform_answers,
+    transform_users,
+    transform_comments_for_posts
+    )
 import sys
 from pathlib import Path
 load_dotenv()
@@ -25,6 +30,7 @@ def run():
     repo.create_table("questions", tables["questions"]["schema"])
     repo.create_table("answers", tables["answers"]["schema"])
     repo.create_table("users", tables["users"]["schema"])
+    repo.create_table("comments", tables["comments"]["schema"])
 
     # Step 1: Fetch recent questions
     questions = service.get_recent_questions(days=config.DAYS_TO_FETCH)
@@ -32,10 +38,21 @@ def run():
 
     # Step 1.5: Fetch answers for the recent questions
     answers = service.get_answers_for_questions(question_ids)
+    answer_ids = [a["answer_id"] for a in answers]
+    q_comments = service.get_comments_for_posts(question_ids, post_type="questions")
+    a_comments = service.get_comments_for_posts(answer_ids, post_type="answers")
 
     # Step 2: Transform the data
     transformed_questions = transform_questions(questions)
     transformed_answers = transform_answers(answers)
+    transformed_q_comments = transform_comments_for_posts(q_comments)
+    transformed_a_comments = transform_comments_for_posts(a_comments)
+
+    transformed_q_comments_df = transformed_q_comments.collect()
+    repo.upsert("comments", transformed_q_comments_df, tables["comments"]["primary_key"])
+    transformed_a_comments_df = transformed_a_comments.collect()
+    repo.upsert("comments", transformed_a_comments_df, tables["comments"]["primary_key"])
+
 
     # USERS
     user_ids = set()

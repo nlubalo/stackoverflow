@@ -37,5 +37,17 @@ TABLES = {
             profile_image TEXT,
         """,
         "primary_key": "user_id"
+    },
+    "comments": {
+        "schema": """
+            comment_id INTEGER,
+            post_id INTEGER,
+            post_type TEXT,
+            creation_date TIMESTAMP,
+            score INTEGER,
+            owner_user_id INTEGER
+        """,
+        "primary_key": "comment_id"
     }
+
 }

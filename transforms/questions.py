@@ -45,3 +45,16 @@ def transform_users(users):
         }
         for u in users
     ])
+
+def transform_comments_for_posts(comments):
+    return pl.LazyFrame([
+        {
+            "comment_id": c.get("comment_id"),
+            "post_id": c.get("post_id"),
+            "post_type": c.get("post_type"),
+            "creation_date": datetime.utcfromtimestamp(c.get("creation_date")),
+            "score": c.get("score"),
+            "owner_user_id": c.get("owner", {}).get("user_id")
+        }
+        for c in comments
+    ])

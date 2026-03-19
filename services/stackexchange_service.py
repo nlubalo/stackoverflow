@@ -114,3 +114,36 @@ class StackExchangeService:
                 print(f"Error fetching users {id_str}: {e}")
                 break
         return all_users
+
+    def get_comments_for_posts(self, post_ids, post_type="questions", page=1, pagesize=100):
+        all_comments = []
+        chunk_size = 20
+        for i in range(0, len(post_ids), chunk_size):
+            chunk_ids = post_ids[i:i + chunk_size]
+            ids_str = ";".join(map(str, chunk_ids))
+
+            while True:
+                try:
+                    endpoint = f"{post_type}/{ids_str}/comments"
+                    data = self.client._make_request(endpoint=endpoint, params={
+                        "site": self.client.site,
+                        "key": self.client.api_key,
+                        "page": page,
+                        "pagesize": pagesize,
+                        "order": "asc",
+                        "sort": "creation"
+                    })
+                    comments = data.get("items", [])
+                    if not comments:
+                        break
+                    all_comments.extend(comments)
+                    if not data.get("has_more", False):
+                        break
+                    page += 1
+                    time.sleep(0.5)  # To respect API rate limits
+                    if "backoff" in data:
+                        time.sleep(data["backoff"])
+                except Exception:
+                    print(f"Invalid post type: {post_type}")
+                    break
+        return all_comments
