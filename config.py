@@ -1,5 +1,5 @@
 DATA_PATH ="data/questions.parquet"
-DAYS_TO_FETCH = 30
+DAYS_TO_FETCH = 1
 
 TABLES = {
     "questions": {
@@ -35,7 +35,6 @@ TABLES = {
             display_name TEXT,
             reputation INTEGER,
             profile_image TEXT,
-            link TEXT
         """,
         "primary_key": "user_id"
     }
