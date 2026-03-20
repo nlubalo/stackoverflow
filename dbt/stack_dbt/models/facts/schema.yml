@@ -1,0 +1,7 @@
+sources:
+  - name: stackoverflow_stg
+    description: "The staging layer for StackOverflow data"
+    database: my_db
+    schema: main
+    tables:
+      - name: questions_answer_metric
