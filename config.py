@@ -1,5 +1,5 @@
 DATA_PATH ="data/questions.parquet"
-DAYS_TO_FETCH = 1
+DAYS_TO_FETCH = 100
 
 TABLES = {
     "questions": {

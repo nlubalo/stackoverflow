@@ -5,8 +5,9 @@ class StackExchangeService:
     def __init__(self, client):
         self.client = client
 
-    def get_recent_questions(self, days=1):
-        to_date = datetime.utcnow()
+    def get_recent_questions(self, days=100):
+        to_date = datetime(2025, 9, 29) #datetime.utcnow()
+        #to_date = datetime.datetime.combine(to_date, datetime.time.min)
         from_date = to_date - timedelta(days=days)
         all_questions = []
         page = 1
@@ -29,8 +30,9 @@ class StackExchangeService:
                 break
         return all_questions
 
-    def get_recent_answers(self, days=1):
-        to_date = datetime.utcnow()
+    def get_recent_answers(self, days=100):
+        to_date = datetime(2025, 9, 29) #datetime.utcnow()
+        #to_date = datetime.datetime.combine(to_date, datetime.time.min)
         from_date = to_date - timedelta(days=days)
         all_answers = []
         page = 1
