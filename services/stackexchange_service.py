@@ -6,7 +6,7 @@ class StackExchangeService:
         self.client = client
 
     def get_recent_questions(self, days=100):
-        to_date = datetime(2025, 9, 29) #datetime.utcnow()
+        to_date = datetime(2025, 6, 19) #datetime.utcnow() 2025-06-20
         #to_date = datetime.datetime.combine(to_date, datetime.time.min)
         from_date = to_date - timedelta(days=days)
         all_questions = []
@@ -31,7 +31,7 @@ class StackExchangeService:
         return all_questions
 
     def get_recent_answers(self, days=100):
-        to_date = datetime(2025, 9, 29) #datetime.utcnow()
+        to_date = datetime(2025, 6, 19) #datetime.utcnow() 2025-06-20
         #to_date = datetime.datetime.combine(to_date, datetime.time.min)
         from_date = to_date - timedelta(days=days)
         all_answers = []

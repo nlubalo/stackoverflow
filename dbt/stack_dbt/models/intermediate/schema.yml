@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: stackover_flow_raw
+    description: "The raw data from StackOverflow"
+    database: my_db
+    schema: main
+    tables:
+      - name: questions
+      - name: answers
+      - name: users
+      - name: comments
